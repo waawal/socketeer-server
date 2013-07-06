@@ -1,4 +1,7 @@
 express = require 'express'
+redis = require 'redis'
+sio = require 'socket.io'
+
 # Config module exports has `setEnvironment` function that sets app settings depending on environment.
 config = require "./config"
 app.configure 'production', 'development', 'testing', ->
