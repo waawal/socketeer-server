@@ -4,6 +4,8 @@ redis = require 'redis'
 sio = require 'socket.io'
 
 redis.debug_mode = false
+
+app = express()
 # Config module exports has `setEnvironment` function that sets app settings depending on environment.
 config = require "./config"
 app.configure 'production', 'development', 'testing', ->
