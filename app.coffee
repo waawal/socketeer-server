@@ -26,7 +26,7 @@ io.configure ->
 
 RedisSocket = ->
   url = require 'url'
-  redisURL = url.parse app.get('REDIS_URL')
+  redisURL = url.parse(app.get('REDIS_URL') or process.env.REDISTOGO_URL or process.env.REDISCLOUD_URL)
   client = redis.createClient redisURL.port, redisURL.hostname, no_ready_check: true
   client.auth redisURL.auth.split(":")[1]
   client
