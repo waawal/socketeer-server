@@ -20,6 +20,7 @@ io = sio.listen(server)
 
 # Define Port
 server.port = process.env.PORT or process.env.VMC_APP_PORT or 3000
+module.exports = server
 
 RedisSocket = ->
   url = require 'url'
@@ -30,3 +31,5 @@ RedisSocket = ->
 io.sockets.on "connection", (socket) ->  
   socket.emit 'connect', 'yolo'
 
+app.get '/', (req, res) ->
+  res.send('Hello World')
