@@ -21,12 +21,12 @@ io = sio.listen(server)
 # Define Port
 server.port = process.env.PORT or process.env.VMC_APP_PORT or 3000
 
+RedisSocket = ->
+  url = require 'url'
+  redisURL = url.parse app.get(app.get('REDIS_URL'))
+  @ = redis.createClient redisURL.port, redisURL.hostname, no_ready_check: true
+  @auth redisURL.auth.split(":")[1]
+
 io.sockets.on "connection", (socket) ->  
   socket.emit 'connect', 'yolo'
 
-createRedisSocket = (serviceUrl) ->
-  url = require 'url'
-  redisURL = url.parse app.get(serviceUrl)
-  client = redis.createClient redisURL.port, redisURL.hostname, no_ready_check: true
-  client.auth redisURL.auth.split(":")[1]
-  return client
