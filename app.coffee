@@ -1,4 +1,3 @@
-cluster = require 'cluster'
 express = require 'express'
 redis = require 'redis'
 sio = require 'socket.io'
