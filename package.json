@@ -1,0 +1,15 @@
+{
+  "name": "socketeer-server",
+  "version": "0.0.0",
+  "description": "Sockets and REST!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/waawal/socketeer-server.git"
+  },
+  "author": "",
+  "license": "GPL"
+}
