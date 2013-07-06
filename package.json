@@ -11,5 +11,13 @@
     "url": "git://github.com/waawal/socketeer-server.git"
   },
   "author": "Daniel Waardal",
-  "license": "GPL"
+  "license": "GPL",
+  "dependencies": {
+      "express": "3.x",
+      "coffee-script": "1.6.x",
+      "hiredis": "latest",
+      "redis": "latest",
+      "socket.io": "latest",
+      "pm2": "latest"
+  }
 }
