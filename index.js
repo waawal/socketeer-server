@@ -1,6 +1,5 @@
 var server, port, cluster;
 require('coffee-script')
-cluster = require 'cluster'
 
 // Include the cluster module
 cluster = require('cluster');
