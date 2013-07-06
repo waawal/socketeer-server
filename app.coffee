@@ -31,9 +31,6 @@ RedisSocket = ->
   client.auth redisURL.auth.split(":")[1]
   client
 
-pub = redis.createClient()
-sub = redis.createClient()
-client = redis.createClient()
 io.set "store", new RedisStore(
   redisPub: RedisSocket()
   redisSub: RedisSocket()
