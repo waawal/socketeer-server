@@ -8,7 +8,6 @@ redis.debug_mode = true
 app = express()
 exports.app = app
 require("./config")(app)
-console.log app.get('REDIS_URL')
 
 app.disable('x-powered-by') # Sthealt!
 
@@ -22,7 +21,6 @@ io.configure ->
   createRedisSocket = (url) ->
     _url = require 'url'
     redis = require 'socket.io/node_modules/redis'
-    console.log app.get('REDIS_URL')
     redisURL = _url.parse url
     client = redis.createClient Number(redisURL.port), redisURL.hostname
     client.auth redisURL.auth.split(":")[1], (err) ->
