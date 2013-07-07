@@ -21,7 +21,7 @@ module.exports = server
 createRedisSocket = ->
   url = require 'url'
   redisURL = url.parse app.get('REDIS_URL')
-  client = redis.createClient redisURL.port, redisURL.hostname, no_ready_check: true
+  client = redis.createClient redisURL.port, redisURL.hostname#, no_ready_check: true
   client.auth redisURL.auth.split(":")[1]
   client
 
