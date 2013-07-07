@@ -22,9 +22,13 @@ app.configure 'production', 'development', 'testing', ->
   createRedisSocket = ->
     url = require 'url'
     redisURL = url.parse app.get('REDIS_URL')
-    client = redis.createClient redisURL.port, redisURL.hostname#, no_ready_check: true
+    client = redis.createClient redisURL.port, redisURL.hostname, no_ready_check: true
     client.auth redisURL.auth.split(":")[1]
     client
+
+  pubsub = {}
+  for sock in "pub sub client".split()
+    pubsub[sock] = createRedisSocket()
 
   io = sio.listen(server)
   io.configure ->
@@ -32,9 +36,9 @@ app.configure 'production', 'development', 'testing', ->
     io.set "polling duration", 10
     io.set 'log level', 1
     io.set "store", new RedisStore(
-      redisPub: createRedisSocket()
-      redisSub: createRedisSocket()
-      redisClient: createRedisSocket()
+      redisPub: pubsub.pub
+      redisSub: pubsub.sub
+      redisClient: pubsub.client
     )
 
   io.sockets.on "connection", (socket) ->  
