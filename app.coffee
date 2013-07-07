@@ -31,7 +31,7 @@ io.configure ->
   io.set "polling duration", 10
   io.set 'log level', 1
   io.set "store", new RedisStore(
-    redis: redis
+    redis: require 'socket.io/node_modules/redis'
     redisPub: pubsub.pub
     redisSub: pubsub.sub
     redisClient: pubsub.client
