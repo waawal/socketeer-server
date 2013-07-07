@@ -1,5 +1,4 @@
 var server, port, cluster;
-require('coffee-script')
 
 // Include the cluster module
 cluster = require('cluster');
@@ -25,9 +24,10 @@ if (cluster.isMaster) {
   });
 // Code to run if we're in a worker process
 } else {
+  require('coffee-script')
   server = require('./app');
   port = server.port;
   server.listen(port, function() {
-    return console.log("Listening on " + port + "\nPress CTRL-C to stop server.");
+    return console.log("Listening on port " + port);
   });
 }
