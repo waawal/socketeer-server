@@ -3,8 +3,6 @@ redis = require 'redis'
 sio = require 'socket.io'
 RedisStore = require 'socket.io/lib/stores/redis'
 
-redis.debug_mode = true
-
 app = express()
 exports.app = app
 require("./config")(app)
