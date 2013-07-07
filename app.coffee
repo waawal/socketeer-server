@@ -20,7 +20,7 @@ io.configure ->
     _url = require 'url'
     redis = require 'socket.io/node_modules/redis'
     redisURL = _url.parse url
-    client = redis.createClient Number(redisURL.port), redisURL.hostname
+    client = redis.createClient Number(redisURL.port), redisURL.hostname, no_ready_check: true
     client.auth redisURL.auth.split(":")[1], (err) ->
       throw err if err
     client
