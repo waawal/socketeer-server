@@ -37,11 +37,15 @@ io.configure ->
     redisSub: pubsub.sub
     redisClient: pubsub.client
   )
+require('./api')(app, io)
 
 io.sockets.on "connection", (socket) ->  
   socket.emit 'connect', 'yolo'
 
-app.get '/', (req, res) ->
+app.get '/socketeer/method/identifier', (req, res) ->
+  res.send('Hello World')
+
+app.post '/socketeer/method/identifier', (req, res) ->
   res.send('Hello World')
 
 app.post '/emit', (req, res) ->
