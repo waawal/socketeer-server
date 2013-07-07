@@ -6,11 +6,10 @@ RedisStore = require 'socket.io/lib/stores/redis'
 redis.debug_mode = false
 
 app = express()
-# Config module exports has `setEnvironment` function that sets app settings depending on environment.
+
 config = require "./config"
-app.configure 'production', 'development', 'testing', ->
-  for key, value of config.setEnvironment app.settings.env
-    app.set key, value
+for key, value of config.setEnvironment process.env.NODE_ENV
+  app.set key, value
 
   app.disable('x-powered-by') # Sthealt!
 
