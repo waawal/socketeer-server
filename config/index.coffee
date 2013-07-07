@@ -15,13 +15,13 @@ exports.setEnvironment = (env) ->
       exports.DEBUG_WARN = true
       exports.DEBUG_ERROR = true
       exports.DEBUG_CLIENT = true
-      exports.REDIS_URL = "redis://redis:redis@localhost:6379/"
+      exports.REDIS_URL = process.env.REDIS_URL or process.env.REDISTOGO_URL or process.env.REDISCLOUD_URL
 
     when "production"
       exports.DEBUG_LOG = false
       exports.DEBUG_WARN = false
       exports.DEBUG_ERROR = true
       exports.DEBUG_CLIENT = false
-      exports.REDIS_URL = process.env.REDISTOGO_URL or process.env.REDISCLOUD_URL
+      exports.REDIS_URL = process.env.REDIS_URL or process.env.REDISTOGO_URL or process.env.REDISCLOUD_URL
     else
       console.log "environment #{env} not found"

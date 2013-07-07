@@ -24,17 +24,17 @@ io.configure ->
   io.set "polling duration", 10
   io.set 'log level', 1
 
-RedisSocket = ->
+createRedisSocket = ->
   url = require 'url'
-  redisURL = url.parse(process.env.REDISCLOUD_URL) # TODO: Fix config app.get('REDIS_URL') or process.env.REDISTOGO_URL or
+  redisURL = url.parse config app.get('REDIS_URL')
   client = redis.createClient redisURL.port, redisURL.hostname, no_ready_check: true
   client.auth redisURL.auth.split(":")[1]
   client
 
 io.set "store", new RedisStore(
-  redisPub: RedisSocket()
-  redisSub: RedisSocket()
-  redisClient: RedisSocket()
+  redisPub: createRedisSocket()
+  redisSub: createRedisSocket()
+  redisClient: createRedisSocket()
 )
 
 io.sockets.on "connection", (socket) ->  
