@@ -21,7 +21,7 @@ io.configure ->
   createRedisSocket = (url) ->
     _url = require 'url'
     redisURL = _url.parse url
-    client = redis.createClient redisURL.port, redisURL.hostname, no_ready_check: true
+    client = redis.createClient Number(redisURL.port), redisURL.hostname, no_ready_check: true
     client.auth redisURL.auth.split(":")[1]
     client
   pubsub = {}
