@@ -7,10 +7,7 @@ redis.debug_mode = false
 
 app = express()
 exports.app = app
-
-config = require "./config"
-for key, value of config.setEnvironment(process.env.NODE_ENV)
-  app.set key, value
+require("./config")(app)
 
 app.disable('x-powered-by') # Sthealt!
 

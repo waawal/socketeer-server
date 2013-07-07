@@ -1,6 +1,7 @@
 #### Config file
 # Sets application config parameters depending on `env` name
-exports.setEnvironment = (env) ->
+exports.setEnvironment = (app) ->
+  env = app.get('env') or process.env.NODE_ENV
   console.log "set app environment: #{env}"
   switch(env)
     when "development"
@@ -10,7 +11,6 @@ exports.setEnvironment = (env) ->
         DEBUG_ERROR: true
         DEBUG_CLIENT: true
         REDIS_URL: "redis://redis:redis@localhost:6379/"
-      return settings
 
     when "testing"
       settings =
@@ -19,7 +19,6 @@ exports.setEnvironment = (env) ->
         DEBUG_ERROR: true
         DEBUG_CLIENT: true
         REDIS_URL: process.env.REDIS_URL or process.env.REDISTOGO_URL or process.env.REDISCLOUD_URL
-      return settings
 
     when "production"
       settings =
@@ -28,6 +27,8 @@ exports.setEnvironment = (env) ->
         DEBUG_ERROR: true
         DEBUG_CLIENT: false
         REDIS_URL: process.env.REDIS_URL or process.env.REDISTOGO_URL or process.env.REDISCLOUD_URL
-      return settings
     else
       exports.setEnvironment "development"
+      
+  for key, value of settings
+    app.set key, value
