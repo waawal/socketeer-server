@@ -1,1 +1,1 @@
-web: NODE_ENV=testing node ./index.js
+web: export NODE_ENV=testing; node ./index.js
