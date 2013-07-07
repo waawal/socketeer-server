@@ -1,6 +1,7 @@
 express = require 'express'
 redis = require 'redis'
 sio = require 'socket.io'
+socketioWildcard = require('socket.io-wildcard')
 RedisStore = require 'socket.io/lib/stores/redis'
 
 app = express()
@@ -14,7 +15,7 @@ server = require("http").createServer(app)
 server.port = process.env.PORT or process.env.VMC_APP_PORT or 3000
 module.exports = server
 
-io = sio.listen(server)
+io = socketioWildcard(sio).listen(server)
 io.configure ->
   createRedisSocket = (url) ->
     _url = require 'url'
@@ -42,3 +43,6 @@ io.sockets.on "connection", (socket) ->
 
 app.get '/', (req, res) ->
   res.send('Hello World')
+
+app.post '/emit', (req, res) ->
+  io.sockets.emit('msg')

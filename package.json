@@ -17,6 +17,7 @@
       "coffee-script": "1.6.x",
       "hiredis": "latest",
       "redis": "latest",
-      "socket.io": "latest"
+      "socket.io": "latest",
+      "socket.io-wildcard": "latest"
   }
 }
