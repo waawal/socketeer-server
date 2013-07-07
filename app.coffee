@@ -4,6 +4,12 @@ sio = require 'socket.io'
 RedisStore = require 'socket.io/lib/stores/redis'
 
 redis.debug_mode = false
+createRedisSocket = ->
+  url = require 'url'
+  redisURL = url.parse app.get('REDIS_URL')
+  client = redis.createClient redisURL.port, redisURL.hostname, no_ready_check: true
+  client.auth redisURL.auth.split(":")[1]
+  client
 
 app = express()
 # Config module exports has `setEnvironment` function that sets app settings depending on environment.
@@ -11,34 +17,27 @@ config = require "./config"
 app.configure 'production', 'development', 'testing', ->
   config.setEnvironment app.settings.env
 
-app.disable('x-powered-by') # Sthealt!
+  app.disable('x-powered-by') # Sthealt!
 
-server = require("http").createServer(app)
-# Define Port
-server.port = process.env.PORT or process.env.VMC_APP_PORT or 3000
-module.exports = server
+  server = require("http").createServer(app)
+  # Define Port
+  server.port = process.env.PORT or process.env.VMC_APP_PORT or 3000
+  module.exports = server
 
-io = sio.listen(server)
-io.configure ->
-  io.set "transports", ["xhr-polling"]
-  io.set "polling duration", 10
-  io.set 'log level', 1
+  io = sio.listen(server)
+  io.configure ->
+    io.set "transports", ["xhr-polling"]
+    io.set "polling duration", 10
+    io.set 'log level', 1
 
-createRedisSocket = ->
-  url = require 'url'
-  redisURL = url.parse config('REDIS_URL')
-  client = redis.createClient redisURL.port, redisURL.hostname, no_ready_check: true
-  client.auth redisURL.auth.split(":")[1]
-  client
+  io.set "store", new RedisStore(
+    redisPub: createRedisSocket()
+    redisSub: createRedisSocket()
+    redisClient: createRedisSocket()
+  )
 
-io.set "store", new RedisStore(
-  redisPub: createRedisSocket()
-  redisSub: createRedisSocket()
-  redisClient: createRedisSocket()
-)
-
-io.sockets.on "connection", (socket) ->  
-  socket.emit 'connect', 'yolo'
+  io.sockets.on "connection", (socket) ->  
+    socket.emit 'connect', 'yolo'
 
 app.get '/', (req, res) ->
   res.send('Hello World')
