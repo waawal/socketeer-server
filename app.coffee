@@ -20,6 +20,7 @@ io = sio.listen(server)
 io.configure ->
   createRedisSocket = (url) ->
     _url = require 'url'
+    redis = require 'socket.io/node_modules/redis'
     redisURL = _url.parse url
     client = redis.createClient Number(redisURL.port), redisURL.hostname, no_ready_check: true
     client.auth redisURL.auth.split(":")[1]
@@ -31,7 +32,7 @@ io.configure ->
   io.set "polling duration", 10
   io.set 'log level', 1
   io.set "store", new RedisStore(
-    redis: require 'socket.io/node_modules/redis'
+    redis: redis
     redisPub: pubsub.pub
     redisSub: pubsub.sub
     redisClient: pubsub.client
