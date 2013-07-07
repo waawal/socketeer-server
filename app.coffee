@@ -3,7 +3,7 @@ redis = require 'redis'
 sio = require 'socket.io'
 RedisStore = require 'socket.io/lib/stores/redis'
 
-redis.debug_mode = false
+redis.debug_mode = true
 
 app = express()
 exports.app = app
@@ -16,19 +16,17 @@ server = require("http").createServer(app)
 server.port = process.env.PORT or process.env.VMC_APP_PORT or 3000
 module.exports = server
 
-createRedisSocket = (url) ->
-  _url = require 'url'
-  redisURL = _url.parse url
-  client = redis.createClient redisURL.port, redisURL.hostname#, no_ready_check: true
-  client.auth redisURL.auth.split(":")[1]
-  client
-
-pubsub = {}
-for sock in "pub sub client".split()
-  pubsub[sock] = createRedisSocket app.get('REDIS_URL')
-
 io = sio.listen(server)
 io.configure ->
+  createRedisSocket = (url) ->
+    _url = require 'url'
+    redisURL = _url.parse url
+    client = redis.createClient redisURL.port, redisURL.hostname, no_ready_check: true
+    client.auth redisURL.auth.split(":")[1]
+    client
+  pubsub = {}
+  for sock in "pub sub client".split()
+    pubsub[sock] = createRedisSocket app.get('REDIS_URL')
   io.set "transports", ["xhr-polling"]
   io.set "polling duration", 10
   io.set 'log level', 1
