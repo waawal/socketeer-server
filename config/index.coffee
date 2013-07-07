@@ -1,6 +1,6 @@
 #### Config file
 # Sets application config parameters depending on `env` name
-exports.setEnvironment = (app) ->
+module.exports = (app) ->
   env = app.get('env') or process.env.NODE_ENV
   console.log "set app environment: #{env}"
   switch(env)
@@ -29,6 +29,6 @@ exports.setEnvironment = (app) ->
         REDIS_URL: process.env.REDIS_URL or process.env.REDISTOGO_URL or process.env.REDISCLOUD_URL
     else
       exports.setEnvironment "development"
-      
+
   for key, value of settings
     app.set key, value
