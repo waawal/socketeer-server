@@ -29,7 +29,7 @@ io.configure ->
       throw err if err
     client
   pubsub = {}
-  for sock in "pub sub client".split()
+  for sock in ['pub', 'sub', 'client']
     pubsub[sock] = createRedisSocket app.get('REDIS_URL')
   io.set "transports", ["xhr-polling"]
   io.set "polling duration", 10
