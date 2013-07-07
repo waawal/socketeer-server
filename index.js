@@ -7,7 +7,7 @@ cluster = require('cluster');
 if (cluster.isMaster) {
 
   // Count the machine's CPUs
-  var cpuCount = process.env.PROCESS_NUMBER || require('os').cpus().length;
+  var cpuCount = Number(process.env.NO_OF_WORKERS) || require('os').cpus().length;
 
   // Create a worker for each CPU
   for (var i = 0; i < cpuCount; i += 1) {
