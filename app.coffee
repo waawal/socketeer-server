@@ -22,8 +22,9 @@ io.configure ->
     _url = require 'url'
     redis = require 'socket.io/node_modules/redis'
     redisURL = _url.parse url
-    client = redis.createClient Number(redisURL.port), redisURL.hostname, no_ready_check: true
-    client.auth redisURL.auth.split(":")[1]
+    client = redis.createClient Number(redisURL.port), redisURL.hostname
+    client.auth redisURL.auth.split(":")[1], (err) ->
+      throw err if err
     client
   pubsub = {}
   for sock in "pub sub client".split()
@@ -32,7 +33,7 @@ io.configure ->
   io.set "polling duration", 10
   io.set 'log level', 1
   io.set "store", new RedisStore(
-    redis: redis
+    redis: require 'socket.io/node_modules/redis'
     redisPub: pubsub.pub
     redisSub: pubsub.sub
     redisClient: pubsub.client
