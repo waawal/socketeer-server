@@ -9,7 +9,8 @@ app = express()
 # Config module exports has `setEnvironment` function that sets app settings depending on environment.
 config = require "./config"
 app.configure 'production', 'development', 'testing', ->
-  config.setEnvironment app.settings.env
+  for key, value of config.setEnvironment app.settings.env
+    app.set key, value
 
   app.disable('x-powered-by') # Sthealt!
 
