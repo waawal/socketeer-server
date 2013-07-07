@@ -16,16 +16,16 @@ server = require("http").createServer(app)
 server.port = process.env.PORT or process.env.VMC_APP_PORT or 3000
 module.exports = server
 
-createRedisSocket = ->
-  url = require 'url'
-  redisURL = url.parse exports.app.get('REDIS_URL')
+createRedisSocket = (url) ->
+  _url = require 'url'
+  redisURL = _url.parse url
   client = redis.createClient redisURL.port, redisURL.hostname#, no_ready_check: true
   client.auth redisURL.auth.split(":")[1]
   client
 
 pubsub = {}
 for sock in "pub sub client".split()
-  pubsub[sock] = createRedisSocket()
+  pubsub[sock] = createRedisSocket app.get('REDIS_URL')
 
 io = sio.listen(server)
 io.configure ->
